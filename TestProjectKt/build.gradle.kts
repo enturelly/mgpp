@@ -1,5 +1,4 @@
 import io.github.liplum.mindustry.*
-import io.github.liplum.mindustry.task.AntiAlias
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -46,81 +45,55 @@ tasks.register<TestOutputTask>("iconMaker") {
 }
 mindustry {
     dependency {
-        //mindustry on "v136"
-        mindustry mirror "v141.2"
+        mindustry on "v141.3"
         arc on "v141.3"
-        // arc on latestRelease
     }
-    client {
-        mindustry official "v141.3"
-        //mindustry be latest
-        /*
-        mindustry from GameLocation(
-            user = "mindustry-antigrief",
-            repo = "mindustry-client",
-            version = "v8.0.0",
-            release = "erekir-client.jar"
-        )
-        */
-        //mindustry from localProperties
-        // mindustry fromLocal "F:/Mindustry/Mindustry-BE-Desktop-22799.jar" named "22799.jar"
-        // `clearUp` as default, it will delete other versions when download a new one
-        // `keepOthers` will keep them
-    }
-    server {
-        //mindustry be "22728"
-        mindustry official "v141.3"
-    }
-    mods {
-        worksWith {
-            add kotlin "liplum/cyberio"
-            add folder "$buildDir/mods"
-            add folder "$buildDir/fakeMods"
-            add hjson "BlueWolf3682/Exotic-Mod" branch "0.8"
-            add fromTask "iconMaker"
-            add localProperties "extraModPath"
-        }
-    }
-    meta += ModMeta(
-        name = "mgpp-kt",
-        displayName = "MGPP Kotlin Test",
-        main = "plumy.test.TestModKt",
+    modMeta {
+        name = "mgpp-kt"
+        displayName = "MGPP Kotlin Test"
+        main = "plumy.test.TestModKt"
         author = "Liplum"
-    )
+    }
     meta["version"] = "Kotlin 666"
     meta.minGameVersion = "136"
-    deploy {
-        baseName = "KotlinMod"
-        version = "666"
-        // fatJar is default option unless you use another tool like shadowJar
-        // fatJar
-    }
-    run {
-        // useDefaultDataDir
-    }
+}
+deployMod {
+    baseName = "KotlinMod"
+    version = "666"
 }
 runMindustry {
     addModpack {
-        jvm("liplum/CyberIO")
+        // default modpack
+        jvm(repo = "liplum/CyberIO")
+        json(repo = "BlueWolf3682/Exotic-Mod", branch = "0.8")
+        fromTask(path = "iconMaker")
+    }
+    val modpack2nd = addModpack("number 2") {
+        json(repo = "sk7725/TimeControl")
+    }
+    addModpack("for debugging") {
+        `testingUtilities`
+        `informatis`
     }
     addClient {
         // anonymous 1
-        official("v141.3")
+        official(version = "v141.3")
+    }
+    addClient("debugging") {
+        official(version = "v141.3")
+        modpack = "for debugging"
     }
     addClient {
         // anonymous 2
-        official("v137")
+        fooClient(tag = "v8.0.0", file = "erekir-client.jar")
+        modpack = modpack2nd
     }
-    addClient {
-        name = "Old Mindustry"
-        official("v126")
+    addClient(name = "Old Mindustry") {
+        official(version = "v126")
     }
     addServer {
-        official("v141.3")
+        official(version = "v141.3")
     }
-}
-tasks.jar {
-    archiveBaseName.set("TestRenamed")
 }
 
 tasks.dexJar {
@@ -130,25 +103,12 @@ tasks.dexJar {
     }
 }
 mindustryAssets {
-    sprites {
-        dir = rootDir.resolve("sprites")
-        dependsOn("antiAlias")
-    }
-    sprites {
-        dir = rootDir.resolve("sprites/data")
-        rootAt(rootDir.resolve("sprites"))
-        dependsOn("antiAlias")
-        genClass
-    }
-    sounds {
-        dir = rootDir.resolve("sounds")
-        genClass
-    }
+
 }
 
-tasks.named<AntiAlias>("antiAlias") {
+tasks.antiAlias {
     sourceDirectory.set(rootDir.resolve("sprites-raw"))
-    destinationDirectory.set(rootDir.resolve("sprites"))
+    destinationDirectory.set(mindustryAssets.assetsRoot.get().resolve("sprites"))
     addFilter {
         it.name != "sender.png"
     }

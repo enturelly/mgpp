@@ -8,7 +8,7 @@
 
 <br>
 
-### ***Plumy*** *the **[Mindustry]** Gradle plugin V2.*
+### ***Plum,*** *the **[Mindustry]** Gradle plugin V2.*
 *The next generation of Mindustry modding.*
 <br>
 <br>
@@ -24,16 +24,13 @@
 
 <br>
 
-<kbd>   <br>   Resource Class Generation   <br>   </kbd>   
-<kbd>   <br>   Debugging Tools   <br>   </kbd>   
-<kbd>   <br>   Download the Game   <br>   </kbd>
+<kbd>   <br>   Debug Your Mod   <br>   </kbd>
 
-<kbd>   <br>   Work with other Mods   <br>   </kbd>   
+<kbd>   <br>   Saves & Modpack Isolation   <br>   </kbd>   
 <kbd>   <br>   Android Deployment   <br>   </kbd>   
-<kbd>   <br>   Manage Dependencies   <br>   </kbd>
+<kbd>   <br>   Dependency Management   <br>   </kbd>
 
 <kbd>   <br>   Asset Management   <br>   </kbd>   
-<kbd>   <br>   Separated Working Space   <br>   </kbd>
 
 <br>
 <br>
@@ -47,7 +44,7 @@
 | Mindustry |   MGPP    |
 |:---------:|:---------:|
 | `≤ 135.2` | `v1.1.1`  |
-|  `≥ 136`  | `v1.2.0` |
+|  `≥ 136`  | `v1.2.0`  |
 
 <br>
 
@@ -64,7 +61,7 @@
 [Banner]: GFX/preview-small.png
 
 [Getting Started]: https://plumygames.github.io/mgpp/
-[Mod Template]: https://github.com/liplum/MdtModTemplate
+[Mod Template]: https://github.com/liplum/MindustryModTemplate
 [JavaDoc]: https://plumygames.github.io/mgppDoc/index.html
 
 [Example Groovy]: https://github.com/PlumyGames/mgpp/tree/master/TestProjectGroovy

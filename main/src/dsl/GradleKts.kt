@@ -8,6 +8,7 @@ import org.gradle.api.*
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
+import org.gradle.api.file.SourceDirectorySet
 import org.gradle.api.plugins.ExtensionContainer
 import org.gradle.api.plugins.PluginContainer
 import org.gradle.api.provider.*
@@ -23,7 +24,7 @@ internal
 fun Task.tempFi(name: String) =
     temporaryDir.resolve(name)
 internal
-fun Project.proDir(name: String) =
+fun Project.projDir(name: String) =
     projectDir.resolve(name)
 internal
 fun Project.rootDir(name: String) =
@@ -59,6 +60,9 @@ internal
 fun Project.dirProp(): DirProp =
     objects.directoryProperty()
 internal
+fun Project.sourceDirectorySet(name: String, displayName: String): SourceDirectorySet =
+    objects.sourceDirectorySet(name, displayName)
+internal
 fun Project.fileProp(): FileProp =
     objects.property(File::class.java)
 internal
@@ -72,18 +76,8 @@ internal inline
 fun <reified T : Plugin<*>> PluginContainer.apply(
 ): T = this.apply(T::class.java)
 internal inline
-fun <reified T : Plugin<*>> PluginContainer.whenHas(
-    func: () -> Unit,
-) {
-    if (hasPlugin(T::class.java)) func()
-}
-internal inline
-fun PluginContainer.whenHas(
-    pluginID: String,
-    func: () -> Unit,
-) {
-    if (hasPlugin(pluginID)) func()
-}
+fun <reified T : Plugin<*>> PluginContainer.hasPlugin() =
+    hasPlugin(T::class.java)
 internal
 fun Project.dirProv(file: File): Provider<Directory> {
     return layout.dir(provider { file })

@@ -33,64 +33,44 @@ mindustry {
         // mindustryMirror version: latest
         arc version: 'v141.3'
     }
-    client {
-        official version: 'v141.3'
-        //be version: latest named 'Test.jar'
-        /*
-        from GameLocation(
-            'mindustry-antigrief',
-            'mindustry-client',
-            'v8.0.0',
-            'erekir-client.jar'
-        )
-        */
-        // fromLocal "F:/Mindustry/Mindustry-BE-Desktop-22799.jar" named "22799.jar"
-        // from localProperties
-        // be version: '22714'
-        // `clearUp` as default, it will delete other versions when download a new one
-        // `keepOthers` will keep them
+    modMeta {
+        name = 'mgpp-groovy'
+        displayName = 'MGPP Groovy Test'
     }
-    server {
-        official version: 'v141.3'
-
-        // be version: '22714'
-    }
-    mods {
-        worksWith {
-            github 'liplum/cyberio'
-        }
-    }
-    run {
-        // set Mindustry's data directory to "./temp"
-        //dataDir = 'temp'
-    }
-    meta << ModMeta(
-        name: 'mgpp-groovy',
-        displayName: 'MGPP Groovy Test',
-    )
     meta.version = 'groovy 3000'
     meta.minGameVersion = '136'
-    deploy {
-        baseName = 'TestGroovyMod'
-        version = '3.14159'
-        // fatJar is default option unless you use another tool like shadowJar
-        fatJar
-    }
+}
+deployMod {
+    baseName = 'TestGroovyMod'
+    version = '3.14159'
 }
 runMindustry {
     addModpack {
+        // default modpack
         jvm repo: "liplum/CyberIO"
+        json repo: "BlueWolf3682/Exotic-Mod", branch: "0.8"
+    }
+    def modpack2nd = addModpack("number 2") {
+        json repo: "sk7725/TimeControl"
+    }
+    addModpack("for debugging") {
+        testingUtilities
+        informatis
     }
     addClient {
         // anonymous 1
         official version: "v141.3"
     }
-    addClient {
-        // anonymous 2
-        official version: "v137"
+    addClient("debugging") {
+        official version: "v141.3"
+        modpack = "for debugging"
     }
     addClient {
-        name = "Old Mindustry"
+        // anonymous 2
+        fooClient tag: "v8.0.0", file: "erekir-client.jar"
+        modpack = modpack2nd
+    }
+    addClient("Old Mindustry") {
         official version: "v126"
     }
     addServer {
@@ -105,13 +85,8 @@ dexJar {
 }
 mindustryAssets {
     rootAt "$rootDir/assets"
-    // There is no need to create a batch, if you use `rootAt 'foo/bar'`.
-    /*sprites {
-        dir = new File(rootDir, "assets/sprites")
-        genClass // noGenClass is default
-    }*/
 }
-antiAlias {
+tasks.register('antiAlias', io.github.liplum.mindustry.AntiAlias) {
     sourceDirectory = new File(rootDir, 'assets/sprites')
     destinationDirectory = new File(rootDir, 'AA')
     addFilter {
